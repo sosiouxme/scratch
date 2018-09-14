@@ -1,0 +1,14 @@
+#!/bin/bash
+
+touch foo
+tar fc foo.tar foo
+
+cat <<DF > Dockerfile
+FROM fedora:28
+WORKDIR /tmp
+ADD foo.tar .
+RUN ls | grep foo
+DF
+
+imagebuilder .
+docker build .
